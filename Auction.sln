@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auction.Infrastructure", "Auction.Infrastructure\Auction.Infrastructure.csproj", "{DBB3AA64-8A1C-4D98-9A36-5DCE820B6943}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auction.Core", "Auction.Core\Auction.Core.csproj", "{61823A97-6099-468D-8BED-5F40EAB73060}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auction.Client", "Auction.Client\Auction.Client.csproj", "{CBB3FB8A-42DB-4E8B-A7A7-29E8AA043AED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{B33ECAEA-F5A9-4F37-8A65-DF9260F840DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DBB3AA64-8A1C-4D98-9A36-5DCE820B6943}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBB3AA64-8A1C-4D98-9A36-5DCE820B6943}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBB3AA64-8A1C-4D98-9A36-5DCE820B6943}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBB3AA64-8A1C-4D98-9A36-5DCE820B6943}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61823A97-6099-468D-8BED-5F40EAB73060}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61823A97-6099-468D-8BED-5F40EAB73060}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61823A97-6099-468D-8BED-5F40EAB73060}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61823A97-6099-468D-8BED-5F40EAB73060}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBB3FB8A-42DB-4E8B-A7A7-29E8AA043AED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBB3FB8A-42DB-4E8B-A7A7-29E8AA043AED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBB3FB8A-42DB-4E8B-A7A7-29E8AA043AED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBB3FB8A-42DB-4E8B-A7A7-29E8AA043AED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B33ECAEA-F5A9-4F37-8A65-DF9260F840DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B33ECAEA-F5A9-4F37-8A65-DF9260F840DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B33ECAEA-F5A9-4F37-8A65-DF9260F840DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B33ECAEA-F5A9-4F37-8A65-DF9260F840DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

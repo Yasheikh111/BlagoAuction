@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="MediatR" Version="12.0.1" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.3.0-preview1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.6" />
+    <PackageReference Include="Quartz" Version="3.6.2" />
+    <PackageReference Include="Quartz.AspNetCore" Version="3.6.2" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Content Remove="$(SpaRoot)**" />
+    <Content Include="clientapp\package-lock.json" />
+    <Content Include="clientapp\package-lock.json" />
+    <Content Include="clientapp\package.json" />
+    <Content Include="clientapp\package.json" />
+    <Content Include="ClientApp\public\manifest.json" />
+    <Content Include="clientapp\public\manifest.json" />
+    <Content Include="clientapp\tsconfig.json" />
+    <Content Include="clientapp\tsconfig.json" />
+    <None Remove="$(SpaRoot)**" />
+    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+    <None Remove="ClientApp\**" />
+    <Content Remove="ClientApp\**" />
+    <None Remove="obj\**" />
+    <Content Remove="obj\**" />
+    <None Remove="clientapp\node_modules\**" />
+    <Content Remove="clientapp\node_modules\**" />
+    <None Remove="bin\**" />
+    <Content Remove="bin\**" />
+    <Content Remove="front\node_modules\**" />
+    <None Remove="front\node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Auction.Core\Auction.Core.csproj" />
+    <ProjectReference Include="..\Auction.Infrastructure\Auction.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="bin\**" />
+    <Compile Remove="front\node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="bin\**" />
+    <EmbeddedResource Remove="front\node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TestResources\" />
+  </ItemGroup>
+  
+</Project>
