@@ -90,7 +90,7 @@ public class AuthService : IAuthService
                                $" and password : {password}");
 
         var user = await _userManager.FindByEmailAsync(email);
-        user.Balance = 200;
+        user.Balance = 0;
         await _userManager.UpdateAsync(user);
         
         return user;

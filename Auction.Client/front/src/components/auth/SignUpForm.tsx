@@ -52,52 +52,47 @@ const SignUpForm: React.FC = (props) => {
             <span className="text-center justify-content-center pb-5 font-thin text-5xl text-dark">Реєстрація</span>
             <form onSubmit={handleLogin}>
                 <div className="form-group d-flex flex-column">
-                    <label htmlFor="firstname" className="text-primary">
-                        Ім'я
-                    </label>
                     <input
                         type="text"
                         id="firstname"
                         className="form-control p-2 align-self-center w-75 m-2"
                         value={firstname}
+                        placeholder={"Ім`я"}
                         onChange={(e) => setFirstname(e.target.value)}
                         required/>
-                    <label htmlFor="surname" className="text-primary">
-                        Прізвище
-                    </label>
                     <input
                         type="text"
                         id="surname"
                         className="form-control p-2 align-self-center w-75 m-2"
                         value={surname}
+                        placeholder={"Прізвище"}
                         onChange={(e) => setSurname(e.target.value)}
                         required/>
-                    <label htmlFor="email" className="text-primary">
-                        Почта
-                    </label>
                     <input
                         type="email"
                         id="email"
                         className="form-control p-2 align-self-center w-75 m-2"
                         value={email}
+                        placeholder={"Email"}
+                        
                         onChange={(e) => setEmail(e.target.value)}
                         required/>
-                    <label htmlFor="password" className="text-primary">
-                        Пароль
-                    </label>
                     <input
                         type="password"
                         id="password"
+                        placeholder={"Пароль"}
                         className="form-control p-2 align-self-center w-75 m-2"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required/>
                 </div>
 
-                <div className="text-center">
-                    <button type="submit" className="btn btn-primary btn-lg">
+                <div className="d-flex flex-col text-center">
+                    <button type="submit" className="btn w-50 mt-4 align-self-center btn-primary btn-lg">
                         Відправити
                     </button>
+                    <a onClick={() => navigate("/")} className="mt-2 underline-offset-2 underline">Назад</a>
+                    
                 </div>
             </form>
         </>

@@ -24,83 +24,90 @@ import {MDBFooter} from "mdb-react-ui-kit";
 import ReactLogo from './logos/chat-svgrepo-com.svg';
 import OrganizationsPage from "./pages/OrganizationsPage";
 import AdminOrganizationsPage from "./pages/AdminOrganizationPage";
+import {UserSeatsComponent} from "./pages/UserSeatsComponent";
 
 function App() {
-    const [isAuth,setIsAuth] = useState(false);
-    const [isHidden,setIsHidden] = useState(true);
+    const [isAuth, setIsAuth] = useState(false);
+    const [isHidden, setIsHidden] = useState(true);
     const navigate = useNavigate();
-    const onLogoSelect = () =>{
+    const onLogoSelect = () => {
         setIsHidden(false)
         return () => setIsHidden(true)
     }
-    
-    return (
-    <div  className="App h-100">
 
-        <div className="bg bg-white"></div>
-            
-        <div className="d-flex flex-column p-0 rounded-t-none container position-relative h-100">
-            
-            <div   className="row h-100 text-dark justify-content-center align-content-center">
-                <Navbar variant="dark"  className="w-75 align-self-center justify-content-center me-5 ms-5 d-flex sticky-top fixed-top p-0 rounded-2 align-top" bg="dark">
-                    <Container>
-                        <Navbar.Brand className="border-1px font-extrabold pe-4 ps-4 shadow-md hover:bg-red-400 m-1 shadow-t shadow-red-400 rounded-5 p-1" href="/">
-                            Blago 
-                            <span className="ms-1 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-blue-600">🇺</span>
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">🇦</span>
+    return (
+        <div className="App navbar-scroll overflow-y-auto overflow-auto h-100">
+            <>
+                <header className="sticky-top fixed-top align-top">
+                    <Navbar variant="light"
+                            className="w-100 pe-5 bg-white flex-row p-3 m-0 border-b-2 shadow-b-lg border-bottom-1 d-flex rounded-2">
+                        <Navbar.Brand className="ms-3 d-flex bg-sky-50 align-items-baseline shadow-md rounded-5 px-3"
+                                      href="/">
+                            <span className="font-semibold text-gray-600 me-1 text-2xl">Blago </span>
+                            <div className=" align-items-center font-extrabold  hover:bg-red-400 rounded-5">
+                                <span
+                                    className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-blue-400">🇺</span>
+                                <span
+                                    className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">🇦</span>
+                            </div>
                         </Navbar.Brand>
-                        { authUtils.isUserAuthenticated()
+                        {authUtils.isUserAuthenticated()
                             ? <>
-                                <Navbar.Toggle onClick={() => navigate("/organizations/")} className="text-md text-light d-flex ms-3 me-auto">Організації</Navbar.Toggle>
+                                <Navbar.Toggle onClick={() => navigate("/organizations/")}
+                                               className="text-xl hover:bg-slate-50 ms-44 text-dark border-0 d-flex">
+                                    <span className="text-sm">Організації</span></Navbar.Toggle>
+                                <Navbar.Toggle onClick={() => navigate("/")}
+                                               className="text-xl hover:bg-slate-50 text-dark border-0 d-flex">
+                                    <span className="text-sm">Лоти</span></Navbar.Toggle>
                                 <UserMiniProfile setIsAuthenticated={setIsAuth}></UserMiniProfile>
                             </>
                             : null
                         }
-                    </Container>
-                </Navbar>
-                <div style={{minHeight: "fit-content",maxHeight: "90%"}} className="d-flex flex-column bg-light h-100 text-black overflow-visible shadow w-75 align-content-center">
-            
-            <Routes>
-                <Route path="/createOrg" element={<OrganizationCreationPage/>} />
-                <Route path="/create" element={<LotCreationPage/>}/>
-                <Route path="/lots" element={<AdminLotsPage/>}/>
-                <Route path="/login" element={<AuthPage setIsAuthenticated={setIsAuth} component={null}/>}  />
-                <Route path="/signin" element={<AuthPage setIsAuthenticated={setIsAuth} component={SignInForm} />} />
-                <Route path="/signup" element={<AuthPage setIsAuthenticated={setIsAuth} component={SignUpForm}/>} />
-                <Route path="/pay" element={<PaymentPage />} />
-                <Route path="/organization/:orgId" element={<OrganizationPage />} />
-                <Route path="/ticket/send/" element={<TicketPage />} />
-                <Route path="/lot/:lotId" element={<LotPage/>} />
-                <Route path="/ticket" element={<RegistrationTicketsAdminPage />} />
-                <Route path="/organizations/" element={<OrganizationsPage />} />
-                <Route path="/manageOrgs" element={<AdminOrganizationsPage />} />
-                <Route
-                    path="/"
-                    element={<ProtectedRoute component={MainPage} isAuthenticated={() => authUtils.isUserAuthenticated()} />}
-                />
-                <Route
-                    path="/owned"
-                    element={<ProtectedRoute component={OwnedLots} isAuthenticated={() => authUtils.isUserAuthenticated()} />}
-                />
-            </Routes>
-                    
-            </div>
-                <footer className="w-75 p-0">
-                    <Navbar variant=""  className=" align-self-center me-auto ms-auto d-flex justify-content-center d-flex p-0 rounded-2 align-top" bg="dark">
-                        <Container className="bg-slate-600">
-                            <Navbar.Brand onClick={() => navigate("ticket/send/")} className="d-flex">
-                                <Image onMouseLeave={() => setIsHidden(true)} onMouseEnter={onLogoSelect} className="w-8 m-1" src={ReactLogo}></Image>
-                                <span hidden={isHidden} className="m-1 ease-in">Звязок з адміністратором</span>
-                            </Navbar.Brand>
-                        </Container>
                     </Navbar>
-                </footer>
+                </header>
+
+                <main className="min-h-screen h-100">
+                    <div className="w-100 flex-column p-0 container h-100">
+
+                        <div className="d-flex text-dark h-100 flex-column bg-light text-black border-1 
+                shadow-md w-100 align-content-center">
+
+                            <Routes>
+                                <Route path="/createOrg" element={<OrganizationCreationPage/>}/>
+                                <Route path="/create" element={<LotCreationPage/>}/>
+                                <Route path="/lots" element={<AdminLotsPage/>}/>
+                                <Route path="/login"
+                                       element={<AuthPage setIsAuthenticated={setIsAuth} component={null}/>}/>
+                                <Route path="/signin"
+                                       element={<AuthPage setIsAuthenticated={setIsAuth} component={SignInForm}/>}/>
+                                <Route path="/signup"
+                                       element={<AuthPage setIsAuthenticated={setIsAuth} component={SignUpForm}/>}/>
+                                <Route path="/pay" element={<PaymentPage/>}/>
+                                <Route path="/organization/:orgId" element={<OrganizationPage/>}/>
+                                <Route path="/ticket/send/" element={<TicketPage/>}/>
+                                <Route path="/lot/:lotId" element={<LotPage/>}/>
+                                <Route path="/ticket" element={<RegistrationTicketsAdminPage/>}/>
+                                <Route path="/organizations/" element={<OrganizationsPage/>}/>
+                                <Route path="/manageOrgs" element={<AdminOrganizationsPage/>}/>
+                                <Route path="/getSeats" element={<UserSeatsComponent bets={[]} participants={[{},{},{},{}]}/>}/>
+                                <Route
+                                    path="/"
+                                    element={<ProtectedRoute component={MainPage}
+                                                             isAuthenticated={() => authUtils.isUserAuthenticated()}/>}
+                                />
+                                <Route
+                                    path="/owned"
+                                    element={<ProtectedRoute component={OwnedLots}
+                                                             isAuthenticated={() => authUtils.isUserAuthenticated()}/>}
+                                />
+                            </Routes>
+                        </div>
+                    </div>
+                </main>
+            </>
         </div>
-            
-        </div>
-        </div>
-        
-  );
+    )
+        ;
 }
 
 export default App;

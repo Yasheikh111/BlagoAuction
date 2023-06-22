@@ -1,5 +1,6 @@
 ﻿using System.Security;
 using Ardalis.GuardClauses;
+using Auction.Client.Dto;
 using Auction.Client.Dto.Bet;
 using Auction.Client.Dto.Lot;
 using Auction.Client.Dto.Org;
@@ -74,7 +75,8 @@ public class LotsController : ControllerBase
             lot.Step = (double)lotDto.BetStep / 100;
             lot.TimeToBeatPreviousBet = new TimeSpan(0,0,lotDto.SecondsToBeatPrevBet);
             lot.MinBet = lotDto.MinBet;
-            lot.Target = lotDto.Target;
+            lot.TargetCard = lotDto.TargetCard;
+            lot.Goal = lotDto.Goal;
             lot.Description = lotDto.Description;
 
             await _lotRepository.Add(lot);
@@ -139,6 +141,12 @@ public class LotsController : ControllerBase
                     ? new ItemDto { Description = lot.Item.Description, Image = lot.Item.Photo }
                     : null,
                 Description = lot.Description,
+                Organization = new OrganizationDto
+                {
+                    Id = lot.LotCreation?.Organization.Id ?? 0,
+                    Image = lot.LotCreation?.Organization.Logo ?? new byte[5],
+                    Name = lot.LotCreation?.Organization.Name ?? ""
+                },
                 LotBetDtos = lot.Bets.Any() ?
                     lot.Bets.Select(bet => new Dto.LotBetDto
                     {
@@ -152,7 +160,14 @@ public class LotsController : ControllerBase
                 StartDate = lot.StartTime,
                 EndDate = lot.EndTime,
                 BetStep = lot.Step,
-                Participants = lot.RegisteredUsers.Count
+                Participants = lot.RegisteredUsers.Count,
+                LatestBet = lot.LatestBet?.BetAmount ?? 0,
+                Creator = new UserDto
+                {
+                    Username = lot.LotCreation.CreatorUser.Name + lot.LotCreation.CreatorUser.Surname
+                },
+                Goal = lot.Goal,
+                BetTime = lot.TimeToBeatPreviousBet.Seconds
             };
             
             return Ok(lotDto);
@@ -231,10 +246,14 @@ public class LotsController : ControllerBase
         Participants = lot.RegisteredUsers.Count,
         Organization = new OrganizationDto
         {
-            Id = lot.LotCreation.Organization.Id,
-            Image = lot.LotCreation.Organization.Logo,
-            Name = lot.LotCreation.Organization.Name
-        }
+            Id = lot.LotCreation?.Organization.Id ?? 0,
+            Image = lot.LotCreation?.Organization.Logo ?? new byte[5],
+            Name = lot.LotCreation?.Organization.Name ?? ""
+        },
+        LatestBet = lot.LatestBet?.BetAmount ?? 0,
+        Step = (int)(lot.Step * 100),
+        Goal = lot.Goal,
+        BetTime = lot.TimeToBeatPreviousBet.Seconds
     };
 
     [HttpGet]

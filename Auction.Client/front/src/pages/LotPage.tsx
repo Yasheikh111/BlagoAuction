@@ -26,7 +26,7 @@ const LotPage: React.FC = () => {
     const [bets, setBets] = useState<Bet>();
     const [winner, setWinner] = useState<any>();
     const [loaded, setLoaded] = useState(false);
-    const [currBet, setCurrBet] = useState(0);
+    const [currBet, setCurrBet] = useState<any>(0);
 
     //popup
     const [showPopUp, setShowPopUp] = useState(false);
@@ -107,49 +107,93 @@ const LotPage: React.FC = () => {
 
     if (loaded)
         return (
-            <div className="bg-light min-vh-100 p-5 pt-0 flex-wrap d-flex align-items-baseline  w-100 h-100 d-flex">
+            <div className="bg-light h-100 p-5 pt-0 flex-wrap d-flex align-items-baseline  w-100 h-100 d-flex">
                 <Modal show={showPopUp} onHide={() => setShowPopUp(false)}>
                     <Modal.Header closeButton>
                         <Modal.Title></Modal.Title>
                     </Modal.Header>
                     <Modal.Body>{popUpText}</Modal.Body>
                 </Modal>
-                <Carousel variant="dark"
-                          className="d-flex align-items-baseline  w-50 max-h-72 overflow-auto h-75 pt-0 ms-auto me-auto align-self-center shadow-blue-200 shadow-2xl rounded-xl">
-                    <Carousel.Item className="rounded-3  overflow-auto h-100 d-flex overflow-auto">
-                        <Image
-                            className="card-img  w-100 overflow-auto rounded-3 h-100"
-                            src={`data:image/jpeg;base64,${lot?.item.image}`} alt=""></Image>
-                    </Carousel.Item>
-                </Carousel>
+                <div className="grid w-100 p-5 m-4 grid-cols-2">
+                    <div className="d-flex col-1  w-100 flex-col">
+                        <div className="rounded-4 mb-3 aspect-square">
+                            <Image
+                                className="card-img w-100 overflow-auto rounded-3 h-100"
+                                src={`data:image/jpeg;base64,${lot?.item.image}`} alt=""></Image>
+                        </div>
 
-                <hr className="bg-primary w-75  shadow-1-primary d-flex ms-auto me-auto"></hr>
+                        <Card
+                            className="text-black w-11/12 shadow-lg h-100 align-items-start justify-content-start d-flex flex-column w-100 me-5">
+                            <>
+                                <h2 className="display-6 align-self-center">Опис лоту</h2>
 
-                <div className="d-flex align-content-center justify-content-center w-100 d-flex">
-                    <Card
-                        className="text-black shadow-lg ps-4 pb-4 pt-2 p-4 h-100 align-items-start justify-content-start d-flex flex-column w-50 me-5">
-                        <>
-                            <h2 className="display-6 align-self-center">Опис лоту</h2>
-                            <div className="d-flex bg-red-5 bg-gray-50 flex-column w-75 m-auto hover:bg-slate-50 pt-1 pb-1 flex-row border
-                         border-black rounded-3 p-4 text-xl m-2 ms-2 mt-1 mb-0 justify-content-center">
-                                <div className="d-flex flex-column align-items-baseline">
-                                    {
-                                        Lot.getState(lot) === LotState.Scheduled ?
+                                <div className="d-flex flex-column w-50 text-muted p-3">
+                                    <p className="m-2 mt-1 justify-content-start text-start text-xl w-100 pe-5 pb-5 pt-1 ps-1">{lot?.description}</p>
+                                </div>
 
-                                            <>
-                                                <div className="d-flex  flex-row">
-                                                    <span className="d-flex flex-nowrap align-self-baseline">Статус лоту:</span>
-                                                    
+
+                            </>
+                            <span></span>
+                        </Card>
+                    </div>
+                    <div className="d-flex justify-content-center w-100">
+
+
+                        <div className="w-100 ms-5 min-h-48 h-100 grid grid-rows-2">
+                            <Card className="p-4 mb-1">
+                                <div className="d-flex justify-content-start align-content-start flex-col">
+                                    <div className="d-flex flex-row font-thinalign-items-center">
                                         <span
-                                            className="ms-1 align-self-baseline rounded-4 border-2 shadow-md shadow-amber-200/50 border-amber-500 p-1 border-opacity-10
+                                            className="font-normal text-lg text-muted me-1">{lot.creator.username} з </span>
+                                        <Image
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            title={lot.organization.name}
+                                            className="card-img d-flex shadow-blue-100 border-1 drop-shadow-xl shadow-inner align-self-center me-1 justify-self-center rounded-3 h-8 w-auto"
+                                            src={`data:image/jpeg;base64,${lot?.organization.image}`}
+                                            alt=""></Image>
+                                        <span className="font-thin text-lg text-muted me-1">збирає на <span
+                                            className="text-black font-extrabold">{lot.goal}</span></span>
+                                        
+
+                                    </div>
+                                    <span
+                                        className="text-muted me-auto mb-0 mt-2 ">Початкова ставка:<span className="font-semibold 
+                                    text-transparent ms-2 bg-clip-text bg-gradient-to-r from-blue-500 to-violet-700">
+                                    {lot?.minBet} грн.
+                                </span>
+                            </span>
+                                    <span
+                                        className="text-muted me-auto mb-0">Крок ставки:<span className="font-semibold 
+                                    text-transparent ms-2 bg-clip-text bg-gradient-to-r from-blue-500 to-violet-700">
+                                    {lot?.betStep * 100}%.
+                                </span>
+                            </span>
+                                    <span
+                                        className=" text-muted me-auto  ">Час початку: {moment(lot?.startDate).format("HH:mm DD/MM")}</span>
+                                    <span
+                                        className=" text-muted me-auto ">Час закінчення: {moment(lot?.endDate).format("HH:mm DD/MM")}</span>
+
+
+                                    <div className="d-flex text-muted flex-column align-items-baseline">
+                                        {
+                                            Lot.getState(lot) === LotState.Scheduled ?
+
+                                                <>
+                                                    <div className="d-flex  flex-row">
+                                                        <span className="d-flex flex-nowrap align-self-baseline">Статус лоту:</span>
+
+                                                        <span
+                                                            className="ms-1 align-self-baseline rounded-4 border-2 shadow-md shadow-amber-200/50 border-amber-500 p-1 border-opacity-10
                                          text-amber-400 drop-shadow-xl shadow-amber-500 d-flex text-xl font-thin">
                                             Реєстрація
                                         </span>
-                                                </div>
-                                                    
-                                                    <div className="bg-amber-500 ms-auto me-auto rounded-4 bg-opacity-50 m-1">
+                                                    </div>
+
+                                                    <div
+                                                        className="bg-amber-500 ms-auto me-auto rounded-4 bg-opacity-50 m-1">
                                                         {!lot?.canUserBet ? <Button
-                                                            variant={""}
+                                                                variant={""}
                                                                 onClick={() => onLotRegisterClick(lot.id)}>Зареєструватися</Button>
                                                             : Lot.getState(lot) === LotState.Scheduled && lot.canUserBet ?
                                                                 <Button disabled className="bg-dark">Ви вже
@@ -157,90 +201,75 @@ const LotPage: React.FC = () => {
                                                                     ✔</Button>
                                                                 : null}
                                                     </div>
-                                            </>
-                                            : Lot.getState(lot) === LotState.Started ?
-                                                <>
-                                                    <div className="d-flex  flex-row">
-                                                        <span className="d-flex flex-nowrap align-self-baseline">Статус лоту:</span>
-                                                        <span className="ms-1 align-self-baseline rounded-4 border-2 shadow-md shadow-emerald-200/50 border-emerald-500 p-1 border-opacity-10
-                                         text-emerald-400 drop-shadow-xl shadow-amber-500 d-flex text-xl font-thin">Почався</span>
-                                                    </div>
-                                                    <span className="text-lg ">Поточна ставка: <span
-                                                        className="ms-2 font-semibold">{currBet} грн.</span>
-                                                </span>
                                                 </>
-                                                :
-                                                <>
-                                                    <div className="d-flex  flex-row">
-                                                        <span className="d-flex align-self-baseline">Статус лоту:</span>
-                                                        <span
-                                                            className="ms-1 align-self-baseline rounded-4 border-2 shadow-md shadow-red-200/50 
+                                                : Lot.getState(lot) === LotState.Started ?
+                                                    <>
+                                                        <div className="d-flex  flex-row">
+                                                            <span className="d-flex flex-nowrap align-self-baseline">Статус лоту:</span>
+                                                            <span className="ms-1 align-self-baseline rounded-4 border-2 shadow-md shadow-emerald-200/50 border-emerald-500 p-1 border-opacity-10
+                                         text-emerald-400 drop-shadow-xl shadow-amber-500 d-flex text-xl font-thin">Почався</span>
+                                                        </div>
+                                                        <span className="text-lg ">Поточна ставка: <span
+                                                            className="ms-2 font-semibold">{currBet} грн.</span>
+                                                </span>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <div className="d-flex  flex-row">
+                                                            <span className="d-flex align-self-baseline">Статус лоту:</span>
+                                                            <span
+                                                                className="ms-1 align-self-baseline rounded-4 border-2 shadow-md shadow-red-200/50 
                                                             border-red-500 p-1 border-opacity-10 text-red-500 text-opacity-80 
                                                             drop-shadow-xl shadow-amber-500 d-flex text-xl font-thin ">
                                                             Закінчився
                                                         </span>
-                                                    </div>
-                                                    <div className="d-flex flex-row">Переможець: {
-                                                        winner === undefined ?
-                                                            <div className="ms-1"> Відсутній</div> :
-                                                            <div> {winner.email}</div>
-                                                    }</div>
-                                                </>
+                                                        </div>
+                                                        <div className="d-flex flex-row">Переможець: {
+                                                            winner === undefined ?
+                                                                <div className="ms-1"> Відсутній</div> :
+                                                                <div> {winner.email}</div>
+                                                        }</div>
+                                                    </>
 
-                                    }
+                                        }
 
+                                    </div>
+                                    <div className="text-sm ms-auto">
+                                        {!isEnded && Lot.getState(lot) === LotState.Started ?
+                                            <><span> До завершення:</span><StartTimer
+                                                startDate={lot?.endDate ?? new Date()}/></> :
+                                            !isEnded && Lot.getState(lot) === LotState.Scheduled ?
+                                                <><span> До початку:</span><StartTimer
+                                                    startDate={lot?.startDate ?? new Date()}/></> :
+                                                null
+                                        }
+                                    </div>
                                 </div>
-                            </div>
+                            </Card>
+                            {Lot.getState(lot) === LotState.Scheduled ?
+                                null
+                                :
+                                Lot.getState(lot) === LotState.Started && !isEnded ?
+                                    <LotBetComponent secToEnd={Number(lot.betTime)} latestBetAmount={setCurrBet}
+                                                     updateRequired={loading}
+                                                     betStart={lot?.startDate}
+                                                     isEnded={false} lotId={Number(lotId)}/>
+                                    : <LotBetComponent latestBetAmount={setCurrBet} secToEnd={Number(lot.betTime)}
+                                                       updateRequired={loading}
+                                                       betStart={lot?.startDate ?? new Date()}
+                                                       isEnded={true}
+                                                       lotId={Number(lotId)}/>
 
-                                <span
-                                    className="text-xl m-2 mb-0 mt-2 ">Початкова ставка:<span className="font-semibold 
-                                    text-transparent ms-2 bg-clip-text bg-gradient-to-r from-blue-500 to-violet-700">
-                                    {lot?.minBet} грн.
-                                </span>
-                            </span>
-                            <div className="d-flex flex-column w-50">
-                                <span
-                                    className="text-xl m-2 mt-2 mb-0 font-semibold justify-self-start align-self-start">Інформація</span>
-                                <p className="border-2 shadow-md border-gray-100 m-2 mt-1 justify-content-start text-start w-100 pe-5 pb-5 pt-1 ps-1">{lot?.description}</p>
-                            </div>
-                            <span
-                                className="text-xl m-2 mt-2 mb-0 ">Час початку: {moment(lot?.startDate).format("HH:mm DD/MM")}</span>
-                            <span
-                                className="text-xl m-2 mt-0 ">Час закінчення: {moment(lot?.endDate).format("HH:mm DD/MM")}</span>
-
-                            <>
-                                {!isEnded && Lot.getState(lot) === LotState.Started ?
-                                    <><h4> До завершення:</h4><StartTimer startDate={lot?.endDate ?? new Date()}/></> :
-                                    !isEnded && Lot.getState(lot) === LotState.Scheduled ?
-                                        <><h4> До початку:</h4><StartTimer
-                                            startDate={lot?.startDate ?? new Date()}/></> :
-                                        null
-                                }
-                            </>
-                        </>
-                        <span></span>
-                    </Card>
-
-                    <div className="w-50 min-h-48 h-100 ">
-                        {Lot.getState(lot) === LotState.Scheduled ?
-                            null
-                            :
-                            Lot.getState(lot) === LotState.Started && !isEnded ?
-                                <LotBetComponent latestBetAmount={setCurrBet} updateRequired={loading}
-                                                 betStart={lot?.startDate}
-                                                 isEnded={!lot.canUserBet} lotId={Number(lotId)}/>
-                                : <LotBetComponent latestBetAmount={setCurrBet} updateRequired={loading}
-                                                   betStart={lot?.startDate ?? new Date()}
-                                                   isEnded={true}
-                                                   lotId={Number(lotId)}/>
-
-                        }
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
         )
     else
-        return (<div></div>);
+        return (
+            <div></div>
+        );
 };
 
 export default LotPage

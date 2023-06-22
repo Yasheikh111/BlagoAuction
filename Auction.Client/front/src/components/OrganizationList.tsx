@@ -53,7 +53,7 @@ export const OrganizationList: React.FC<{ organizations: any[],isAdminPanel: boo
                                                 src={`data:image/jpeg;base64,${organization?.image}`} alt=""></Image>
                                         </div>
                                         <div
-                                            className="d-flex mt-3 flex-column justify-content-start align-items-start">
+                                            className="d-flex my-auto align-items-center  flex-column justify-content-start align-items-start">
                                             <span>Успішних лотів: {organization.completedLots ?? 0}</span>
                                             <span className="font-semibold">Зібрано всьго: {organization.amountReceived} грн.</span>
                                         </div>

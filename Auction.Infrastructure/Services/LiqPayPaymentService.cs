@@ -18,13 +18,17 @@ public class LiqPayPaymentService : IPaymentService<LiqPayResponseDto>
     private readonly ILogger<LiqPayPaymentService> _logger;
     private readonly IPaymentRepository _paymentRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IHttpClientFactory _httpClient;
     private static readonly string SECRET_KEY = "sandbox_DFu3mUlIxc9QcAFO9df0OapaJTd7rNwurHG5fc32";
 
-    public LiqPayPaymentService(ILogger<LiqPayPaymentService> logger,IPaymentRepository paymentRepository, IUserRepository userRepository)
+    public LiqPayPaymentService(ILogger<LiqPayPaymentService> logger,IPaymentRepository paymentRepository,
+        IUserRepository userRepository,
+        IHttpClientFactory httpClientFactory)
     {
         _logger = logger;
         _paymentRepository = paymentRepository;
         _userRepository = userRepository;
+        _httpClient = httpClientFactory;
     }
     
     
@@ -62,6 +66,35 @@ public class LiqPayPaymentService : IPaymentService<LiqPayResponseDto>
             Signature = sig,
             Data = base64data
         };
+    }
+    
+    public async void SendToOrg(decimal amount,string target)
+    {
+        _logger.LogInformation("Creating checkout entity..");
+        
+        _logger.LogInformation("Creating liquipay request data..");
+        var param = new Dictionary<string, string>();
+        param.Add("public_key","sandbox_i86338810906");
+        param.Add("private_key",SECRET_KEY);
+        param.Add("action","p2pcredit");
+        param.Add("amount", amount.ToString(CultureInfo.InvariantCulture));
+        param.Add("currency", "UAH");
+        param.Add($"description", $"Поповнення від BlagoUA");
+        param.Add($"order_id", Guid.NewGuid().ToString());
+        param.Add("receiver_card", target);
+        
+        param.Add("server_url",$"http://wauction.asuscomm.com:8080/api/payment/complete/");
+        
+        var requestData = JsonConvert.SerializeObject(param);
+
+        var base64data = EncryptToBase64(requestData);
+        var sig = EncryptWithSha1(base64data);
+        
+        _logger.LogInformation("Request data created.");
+        using var cl = _httpClient.CreateClient();
+        await cl.PostAsync("https://www.liqpay.ua/api/request",
+            new FormUrlEncodedContent(new []{new KeyValuePair<string, string>("data",base64data),
+                new KeyValuePair<string, string>("signature",sig)}));
     }
 
     private string EncryptToBase64(string data)

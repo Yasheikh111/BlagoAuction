@@ -8,5 +8,7 @@ public class LotCreationRequestDto : LotDto
     public int OrganizationId { get; set; }
     
     public int SecondsToBeatPrevBet { get; set; }
-    public string Target { get; set; }
+    public string TargetCard { get; set; }
+    public string Goal { get; set; }
+
 }

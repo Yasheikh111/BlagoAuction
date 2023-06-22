@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using Quartz;
 
@@ -138,7 +139,7 @@ builder.Services.AddScoped<IAuthService,AuthService>();
 builder.Services.AddScoped<IOrganizationService, OrganizationService>();
 builder.Services.AddScoped<ILotService, LotService>();
 builder.Services.AddScoped<ITimerService, TimerService>();
-
+builder.Services.AddHttpClient();
 
 //builder.Services.AddSingleton<IUserIdProvider, DbUserIdProvider>();
 var app = builder.Build();
@@ -167,3 +168,4 @@ app.UseAuthentication();
 app.MapHub<BetHubService>("/betHub");
 
 app.Run();
+var hubConnections = app.Services.GetRequiredService<AppDbContext>().Connections;

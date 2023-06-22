@@ -62,33 +62,30 @@ const SignInForm: React.FC<AuthProps> = (props) => {
             </Modal>
             <span className="text-center justify-content-center pb-5 mb-5 font-thin text-5xl text-dark">Вхід</span>
             <div className="form-group pt-5 d-flex flex-column">
-                <label htmlFor="email" className="text-primary">
-                    Email
-                </label>
                 <input
                     type="email"
                     id="email"
+                    placeholder="Email"
                     className="form-control p-2 align-self-center w-75 m-2"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required/>
             </div>
             <div className="form-group d-flex flex-column">
-                <label htmlFor="password" className="text-primary">
-                    Пароль
-                </label>
                 <input
                     type="password"
                     id="password"
+                    placeholder="Пароль"
                     className="form-control p-2 align-self-center w-75 m-2"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required/>
             </div>
-            <div className="text-center">
-                <button type="submit" className="btn btn-primary btn-lg btn-primary">
+            <div className="d-flex mt-3 flex-column w-100">
+                <button type="submit" className="btn m-1 w-50 align-self-center btn-primary btn-lg btn-primary">
                     Ввійти
                 </button>
+                <span onClick={() => navigate("/")} className="underline-offset-2 underline">Назад</span>
             </div>
         </form>
 

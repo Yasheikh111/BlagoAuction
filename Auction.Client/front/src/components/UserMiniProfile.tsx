@@ -31,10 +31,11 @@ export const UserMiniProfile: React.FC<AuthProps> = (props : AuthProps) => {
         })
             .catch(err => {
                 console.log(err)
+                if (sessionStorage.getItem("user") === undefined)
+                    return
                 sessionStorage.removeItem("user")
                 props.setIsAuthenticated(false);
-                console.log("bb")
-                nav("/login")})
+                console.log("bb")})
     }
     
     useEffect(() => {
@@ -56,8 +57,8 @@ export const UserMiniProfile: React.FC<AuthProps> = (props : AuthProps) => {
     }
     
     return(
-        <div className="row d-flex flex-row ">
-            <div className="d-flex flex-row font-semibold text-light text-sm-start rounded-5">
+        <div className="d-flex flex-row align-self-lg-end justify-self-end justify-content-evenly ms-auto me-44">
+            <div className="d-flex flex-row font-semibold text-light text-sm rounded-5">
                 <div className="d-flex">
                     <div className="bg-slate-500 d-flex flex-row rounded-s-lg p-1 ps-2 pe-2 skew-x-12 m-1 me-0  align-self-center ">
                         <span className="-skew-x-12">{user.email}</span>
@@ -86,13 +87,14 @@ export const UserMiniProfile: React.FC<AuthProps> = (props : AuthProps) => {
                     <div className="bg-sky-600  skew-x-12 m-1 ms-0 me-0 align-self-center p-1">
                         <span className="d-flex -skew-x-12">{user.role}</span></div>
                     <Dropdown className="d-flex rounded-e-md rounded-4" as={ButtonGroup}>
-                        <Dropdown.Toggle variant="secondary" className="d-flex flex-wrap justify-content-center align-content-center pt-auto pb-auto rounded-end rounded-0  m-1 ms-0 skew-x-12 " split id="dropdown-split-basic" />
+                        <Dropdown.Toggle variant="secondary" className="d-flex text-xs flex-wrap justify-content-center align-content-center pt-auto pb-auto rounded-end rounded-0  m-1 ms-0 skew-x-12 " split id="dropdown-split-basic" />
                         
                             {user.role === "Admin" ?
-                                <Dropdown.Menu>
+                                <Dropdown.Menu >
                                     <DropdownItem onClick={() => nav("create")}>Додати аукціон</DropdownItem>
-                                    <DropdownItem onClick={() => nav("lots")}>Адміністрування аукціонів</DropdownItem>
-                                    <DropdownItem onClick={() => nav("ticket")}>Реєстраційні тікети</DropdownItem>
+                                    <DropdownItem   onClick={() => nav("manageOrgs")}>Додати організацію</DropdownItem>
+                                    <DropdownItem   onClick={() => nav("lots")}>Адміністрування аукціонів</DropdownItem>
+                                    <DropdownItem   onClick={() => nav("ticket")}>Реєстраційні тікети</DropdownItem>
                                 </Dropdown.Menu> :
                                 <Dropdown.Menu>
                                     <DropdownItem onClick={() => nav("create")}>Додати аукціон</DropdownItem>

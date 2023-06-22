@@ -44,7 +44,8 @@ export const AdminLotsPage: React.FC = () => {
 
     return(
             <div className="column w-100 p-5 rounded-3">
-                <div className="rounded-5 ms-auto me-auto w-10 p-0 bg-emerald-400 h-auto" >
+                <span className="text-5xl font-thin mb-4">Адміністрування</span>
+                <div className="rounded-5 ms-auto me-auto mt-5 w-10 p-0 bg-emerald-400 h-auto" >
                 <Button variant="" onClick={() => navigate("/create")} className="text-light rounded-5 m-0.5 h-10 d-flex">+</Button>
                 </div>
                 <ListGroup>
@@ -66,10 +67,11 @@ export const AdminLotsPage: React.FC = () => {
                                         </Card>
                                     </div>
                                     <div className="d-flex align-items-start flex-row flex-nowrap justify-content-start">
-                                        <div className="d-flex w-50 h-25 max-h-52 overflow-hidden">
+                                        <div className="d-flex w-25 h-25 max-h-52 overflow-hidden">
                                             <Image
                                                 className="card-img m-3 w-100 me-5 max-h-46 d-flex overflow-hidden border-2 shadow-blue-100 drop-shadow-xl shadow-inner  p-1 justify-self-center rounded-3"
-                                                src={`data:image/jpeg;base64,${lot?.image}`} alt=""></Image>
+                                                src={`data:image/jpeg;base64,${lot?.image}`} alt="">
+                                            </Image>
                                         </div>
                                         <div className="d-flex mt-3 flex-column justify-content-start align-items-start">
                                             <span>Зареєстровано: {lot.participants ?? 0}</span>

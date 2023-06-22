@@ -1,5 +1,6 @@
 ﻿using Auction.Core.Entities;
 using Auction.Infrastructure.Db.Initializer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,15 +11,11 @@ public sealed class AppDbContext : IdentityDbContext<AuctionUser>
     public static bool IsInitalized = false;
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
-        
-            DefaultDbInitializer.Initialize(this);
+        DefaultDbInitializer.Initialize(this);
     }
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<Organization>()
-            .HasIndex(u => u.Name)
-            .IsUnique();
         base.OnModelCreating(builder);
     }
     

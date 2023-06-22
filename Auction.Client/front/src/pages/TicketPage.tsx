@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom';
 import "react-bootstrap";
 import axios from "axios";
 import OrganizationSearch from "../components/OrganizationSearch";
+import {Card, Modal} from "react-bootstrap";
 
 
 
@@ -17,6 +18,11 @@ const TicketPage: React.FC = (props) => {
     const [orgId, setOrgId] = useState(0);
     const navigate = useNavigate();
 
+    //popup
+    const [showPopUp, setShowPopUp] = useState(false);
+    const [popUpText, setPopUpText] = useState("");
+    const [popUpInterval, setPopUpInterval] = useState<any>('');
+    
     const handleClick = (e: React.FormEvent) => {
         e.preventDefault();
         axios.post('http://localhost:8080/api/ticket', {
@@ -28,15 +34,31 @@ const TicketPage: React.FC = (props) => {
             phone: phone
         })
             .then(response => {
+                setPopUpText("Тікет створено.")
+                setShowPopUp(true)
+                let timeout = setTimeout(() => {
+                    console.log("closed");
+                    setShowPopUp(false)
+                    setPopUpInterval(timeout)
+                    clearTimeout(popUpInterval)
+                },5000)
+                return () => clearTimeout(timeout)
             })
             .catch(error => {
                 console.log(error)});
     };
 
     return (
-            <div className="d-flex w-75 ms-auto me-auto flex-column"><span className="text-center d-flex justify-content-center pt-5 pb-1 font-thin text-5xl text-dark">Форма реєстрації представника організації</span>
-            <span className="text-center d-flex justify-content-center p-2 font-thin text-xl text-dark-50">Вкажіть бажані дані</span>
-            <form onSubmit={handleClick}>
+        <Card className="w-50 m-auto p-5 pt-1 shadow-xl shadow-inner-xl  justify-content-center align-content-center">
+        <form onSubmit={handleClick}>
+            <span className="text-center d-flex justify-content-center pt-5 pb-1 font-thin text-5xl text-dark">Форма реєстрації представника організації</span>
+                    <Modal size="sm" centered className="m-auto" show={showPopUp} onHide={() => setShowPopUp(false)}>
+                        <Modal.Header className="d-flex " closeButton>
+                            <Modal.Title className="align-self-center ms-auto">Успіх</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body className="text-emerald-500  rounded-1">{popUpText}</Modal.Body>
+                    </Modal>
+                <span className="text-center text-muted d-flex justify-content-center p-2 font-thin text-xl text-dark-50">Вкажіть бажані дані</span>
                 <div className="form-group d-flex flex-column">
                     <label htmlFor="firstname" className="text-black-75">
                         Ім'я
@@ -92,13 +114,13 @@ const TicketPage: React.FC = (props) => {
                 <div className="w-100 d-flex justify-content-center me-auto ms-auto">
                     <OrganizationSearch setSelectedOrganization={setOrgId}></OrganizationSearch>
                 </div>
-                <div className="text-center m-5">
+                <div className="text-center m-1">
                     <button type="submit" className="btn btn-primary btn-lg">
                         Відправити
                     </button>
                 </div>
-            </form>
-        </div>
+        </form>
+        </Card>
     );
 };
 export default TicketPage;

@@ -17,8 +17,8 @@ import {LotList} from "../components/LotList";
 let axios = LotService.GetService().axios;
 
 
-const lotsInit: Array<Lot> = [new Lot(1,"desc",new Date(Date.now()),new Date(Date.now() + 1000000), "30"),
-    new Lot(2,"desc1",new Date(Date.now() + 10000000),new Date(Date.now() + 2000000000), "25")]
+const lotsInit: Array<Lot> = [new Lot(1, "desc", new Date(Date.now()), new Date(Date.now() + 1000000), "30"),
+    new Lot(2, "desc1", new Date(Date.now() + 10000000), new Date(Date.now() + 2000000000), "25")]
 
 
 const OrganizationPage: React.FC<any> = (props) => {
@@ -28,11 +28,11 @@ const OrganizationPage: React.FC<any> = (props) => {
     const [user, setUser] = useState<any>(authUtils.emptyUser);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
-    const [showState,setShowState] = useState<LotState>(LotState.Scheduled)
-    const [org,setOrg] = useState<any>("");
+    const [showState, setShowState] = useState<LotState>(LotState.Scheduled)
+    const [org, setOrg] = useState<any>("");
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/organization/'+orgId)
+        axios.get('http://localhost:8080/api/organization/' + orgId)
             .then(response => {
                 response.data.lots.forEach((lotDto: any) => {
                     lotDto.startDate = new Date(lotDto.startDate)
@@ -49,21 +49,29 @@ const OrganizationPage: React.FC<any> = (props) => {
     }, []);
 
     return (
-            <div className="d-flex flex-column">
-                {org !== "" ?
-                    <><h1>{org.name}</h1><Image
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title={org.name}
-                        className="card-img d-flex  border-2 shadow-blue-100 drop-shadow-xl shadow-inner align-self-center ms-auto me-auto p-1 justify-self-center rounded-3 h-12 w-auto"
-                        src={`data:image/jpeg;base64,${org.image}`} alt=""></Image>
-                        <h4>Зароблено: {org.amountReceived}</h4><h5>Успішних лотів:{org.completedLots}</h5>
-                        <div className="d-flex justify-content-center">
-                            <LotList isMainPage={false} lots={org.lots}></LotList>
-                        </div>
-                    
-             </> : null}
+        <div className="d-flex h-100 flex-column overflow-clip w-100">
+            <div className="d-flex p-5 min-h-fit flex-row">
+                
+                <div className=" w-25 h-auto text-md justify-content-start align-items-center">
+                <Image
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title={org.name}
+                    className="card-img d-flex border-2 shadow-blue-100 drop-shadow-xl shadow-inner me-auto p-1 rounded-3 w-100"
+                    src={`data:image/jpeg;base64,${org.image}`} alt="">
+                </Image>
+                    <span className="me-auto">{org.name}</span>
+                </div>
+                <span className="ms-auto text-slate-500 text-xl me-auto">Всього зібрано:
+                   <span className="font-black">{org.amountReceived} грн. </span> 
+                </span>
+                <span className="ms-auto text-slate-500 text-xl me-auto">Успішних лотів: 
+                    <span className="font-black">{org.completedLots}</span> </span>
             </div>
+            <div className="d-flex w-100 h-100 max-h-fit justify-content-center">
+                <LotList isMainPage={false} isWinnerPage={false} lots={org?.lots ?? []}></LotList>
+            </div>
+        </div>
     );
 };
 

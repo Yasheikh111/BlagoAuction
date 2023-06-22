@@ -14,6 +14,8 @@ public class Lot : BaseIntEntity
 {
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
+    
+    
 
     public string Description { get; set; } = "";
 
@@ -21,7 +23,9 @@ public class Lot : BaseIntEntity
     public virtual Item Item { get; set; }
 
 
-    public string? Target { get; set; }
+    public string? TargetCard { get; set; }
+
+    public string Goal { get; set; }
 
     public double Step { get; set; } = 0.1;
 
@@ -41,10 +45,10 @@ public class Lot : BaseIntEntity
     public void ReturnFundsForParticipants()
     {
         var winnerId = LatestBet.Id;
-        foreach (var lotBet in Bets)
+        foreach (var user in RegisteredUsers)
         {
-            if (lotBet.Id != winnerId)
-                lotBet.AuctionUser.Balance += lotBet.BetAmount;
+            if (LatestUserBet(user).Id != winnerId)
+                user.Balance += LatestUserBet(user).BetAmount;
         }
     }
 
@@ -61,6 +65,8 @@ public class Lot : BaseIntEntity
             return LotStatus.AwaitingForAccept;
         }
     }
+
+    public LotBet LatestUserBet(AuctionUser auctionUser) => Bets.LastOrDefault(b => b.AuctionUserId == auctionUser.Id);
 
     public TimeSpan TimeRemaining => TimeToBeatPreviousBet - (DateTime.Now - LatestBetTime);
     public DateTime ExpectedEndDate => LatestBetTime + TimeToBeatPreviousBet;

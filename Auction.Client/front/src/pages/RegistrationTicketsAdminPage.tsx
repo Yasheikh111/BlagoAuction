@@ -1,4 +1,4 @@
-﻿import {Button, ButtonGroup, Card, Dropdown, DropdownButton, FormText, Image} from "react-bootstrap";
+﻿import {Button, ButtonGroup, Card, Dropdown, DropdownButton, FormText, Image, Modal} from "react-bootstrap";
 import LotState from "../models/LotState";
 import ListGroup from "react-bootstrap/ListGroup";
 import moment from "moment/moment";
@@ -24,6 +24,9 @@ export const RegistrationTicketsAdminPage: React.FC = () => {
 
     const [tickets, setTickets] = useState<any[]>([]);
 
+    const [showPopUp, setShowPopUp] = useState(false);
+    const [popUpText, setPopUpText] = useState("");
+    const [popUpInterval, setPopUpInterval] = useState<any>('');
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/Ticket')
@@ -37,17 +40,30 @@ export const RegistrationTicketsAdminPage: React.FC = () => {
         axios.get('http://localhost:8080/api/Ticket/approve/' + event.target.id)
             .then(response => {
                 console.log("Ticket Approved!")
+                setPopUpText("Тікет підтверджено.")
+                setShowPopUp(true)
+                let timeout = setTimeout(() => {
+                    console.log("closed");
+                    setShowPopUp(false)
+                    setPopUpInterval(timeout)
+                    clearTimeout(popUpInterval)
+                }, 5000)
             })
             .catch(error => console.log(error))
     }
     
     return (
-        <div className="text-black d-flex flex-column ms-auto me-auto bg-light shadow rounded-3 w-75 align-self-start">
-            <h1>Реєстраційні тікети</h1>
+        <div className="text-black d-flex flex-column ms-auto me-auto bg-light rounded-3 w-75 align-self-start">
+            <span className="text-center d-flex justify-content-center m-3 p-2 font-thin text-5xl text-dark-50">Реєстраційні тікети</span>
+            <Modal size="sm" centered className="m-auto" show={showPopUp} onHide={() => setShowPopUp(false)}>
+            <Modal.Header className="d-flex " closeButton>
+                <Modal.Title className="align-self-center ms-auto">Успіх</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="text-emerald-500  rounded-1">{popUpText}</Modal.Body>
+        </Modal>
             <div className="column w-100 p-5 rounded-3">
                 <ListGroup> 
                     {tickets.map((tk) => (
-                        
                                 <ListGroup.Item className="mt-2  mb-2">
                                     <div className="d-flex flex-column">
                                         <span className="align-self-end">Тікет #{tk.id}</span>

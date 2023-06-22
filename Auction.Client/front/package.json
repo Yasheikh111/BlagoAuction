@@ -33,6 +33,7 @@
     "react-scripts": "latest",
     "rest": "latest",
     "style-loader": "^3.3.2",
+    "tailwind": "^4.0.0",
     "typescript": "^4.9.5",
     "url-loader": "latest",
     "web-vitals": "^2.1.4"

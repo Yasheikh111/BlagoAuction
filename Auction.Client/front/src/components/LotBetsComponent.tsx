@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import LotService from "../services/LotService";
 import authUtils from "../services/authUtils";
-import {Button, Card, Collapse, InputGroup, Modal} from "react-bootstrap";
+import {Button, Card, Collapse, FloatingLabel, Form, InputGroup, Modal} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ListGroup from "react-bootstrap/ListGroup";
 import SignalRService from "./SignalRService";
@@ -52,6 +52,7 @@ interface LotBetProps{
     isEnded: boolean
     updateRequired: boolean
     latestBetAmount: Function
+    secToEnd: number
 }
 
 
@@ -91,7 +92,7 @@ const LotBetComponent: React.FC<LotBetProps> = (props) => {
             console.log("Bet received.")
             clearInterval(currInterval);
             setCurrInterval(null)
-            setCurrentLotEnd(new Date(Date.now() + 10000))
+            setCurrentLotEnd(new Date(Date.now() + Number(props.secToEnd)*1000))
             setBetAvailable(true);
             setNewBetAppeared(true);
             setLotBets(prevBets => [newBet,...prevBets])
@@ -143,26 +144,31 @@ const LotBetComponent: React.FC<LotBetProps> = (props) => {
             { !props.isEnded ?
             /* Display the list of lot bets */
                 <>
-                    <div className="text-dark">
-                        Час перебиття ставки<StartTimer startDate={currentLotEnd ?? new Date()}/>
+                    {lotBets.length!==0 ? 
+                    <div className="text-dark bg-slate-50 text-xl">
+                        Часу залишилось <StartTimer startDate={currentLotEnd ?? new Date()}/>
                     </div>
+                        :null}
                     <div className="d-flex flex-row">
-                        <label className="text-black m-2 me-2" htmlFor="newBetAmount">Ставка: </label>
-                        <input
-                            className="w-25 rounded h-25 d-flex align-self-center shadow animation shadow-1-strong"
-                            type="number"
-                            id="newBetAmount"
-                            min={lotBets.length !== 0 ? lotBets[0].amount : 0}
-                            value={newBetAmount}
-                            onChange={handleNewBetAmountChange}/>
+                    <InputGroup>
+                        <label className="text-black text-lg m-2 me-2" htmlFor="newBetAmount">Ставка: </label>
+                            <input
+                                className="w-50 p-2 rounded h-75 d-flex align-self-center shadow animation shadow-1-strong"
+                                type="number"
+                                id="newBetAmount"
+                                min={lotBets.length !== 0 ? lotBets[0].amount : 0}
+                                value={newBetAmount}
+                                onChange={handleNewBetAmountChange}/>
+                            <InputGroup.Text className="h-75 my-auto">грн</InputGroup.Text>
+                        </InputGroup>
                         <Button
-                            className="h-6 m-2 mt-2 d-flex ms-0 flex-row align-self-center align-items-center ms-auto me-auto"
+                            className="h-8 m-2 mt-2 d-flex ms-0 flex-row align-self-center align-items-center "
                             disabled={!betAvailable}
                             onClick={handlePlaceBet}>Поставити</Button>
                     </div></> : null
             }
 
-            <ListGroup className="">
+            <ListGroup className="overflow-auto">
                 {lotBets.length !== 0 ? lotBets.map((lotBet) => (
                     <Collapse className="bg" in={newBetAppeared || props.isEnded}>
                     <div className={"text-bg-secondary rounded-4 ease-in duration-300  bg-"+(lotBet.username === authUtils.getUser().email

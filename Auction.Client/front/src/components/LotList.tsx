@@ -8,6 +8,7 @@ import {useNavigate} from "react-router-dom";
 import {Lot} from "../models/Lot";
 import LotService from "../services/LotService";
 import LotDetails from "../models/LotDetails";
+import "../index.css"
 
 let axios = LotService.GetService().axios;
 
@@ -47,14 +48,17 @@ export const LotList: React.FC<{ lots: any[],isMainPage:boolean, isWinnerPage:bo
 
 
     return (
-        <><h1 className="d-flex align-self-center m-3"></h1>
+        <div style={{minHeight: "200px"}} className="d-flex w-100 h-100 flex-column">
+            <div className="w-2/4 d-flex align-self-center m-5">
         {props.isMainPage ? <Image
-            className="card-img ease-in duration-100 w-50 align-self-center justify-self-center rounded-4 shadow-2xl hover:scale-105 animation h-100"
+            className="card-img ease-in duration-100   rounded-4
+             shadow-2xl hover:scale-105 animation h-100"
             src={require("../logos/logo.jpg")}></Image> : null
         }
-            <div className="column h-100 min-h-0.5 w-75 justify-content-center align-self-center p-3 rounded-3">
+            </div>
+            <div className="h-100 h-100 mb-5 min-h-fit overflow-auto w-75 justify-content-center align-self-center  rounded-3">
                 {!props.isWinnerPage ?
-                <div className="d-flex bg-slate-300 p-1 rounded-3 flex-row">
+                <div id="scr" className="d-flex bg-slate-300 p-1 mt-0 sticky-top rounded-3 flex-row">
                     <span className="font-semibold align-self-center">Статус:</span>
                     <ButtonGroup className="bg-sky-300">
                         <DropdownButton variant="" as={ButtonGroup}
@@ -76,7 +80,7 @@ export const LotList: React.FC<{ lots: any[],isMainPage:boolean, isWinnerPage:bo
                         showState === Lot.getState(lot) ?
                             <>
                                 <ListGroup.Item
-                                    className="mt-2 rounded-3 hover:bg-slate-100 shadow-lg ease-in duration-300 mb-2"
+                                    className="mt-2 rounded-3 hover:bg-slate-100 shadow-md ease-in duration-300 mb-2"
                                     >
                                     <div className="d-flex mt-2 ms-3 w-100 justify-content-between">
                                         <FormText>Початок: {moment(lot.startDate).format("D/MM/YY HH:mm")}</FormText>
@@ -92,14 +96,15 @@ export const LotList: React.FC<{ lots: any[],isMainPage:boolean, isWinnerPage:bo
                                     </div>
                                     <div
                                         className="d-flex align-items-start flex-row flex-nowrap justify-content-start">
-                                        <div className="d-flex w-50 h-25 max-h-52 overflow-hidden">
+                                        <div className="d-flex w-25 aspect-square h-25 max-h-52 overflow-hidden">
                                             <Image
-                                                className="card-img m-3 w-100 me-5 max-h-46 d-flex overflow-hidden border-2 shadow-blue-100 drop-shadow-xl shadow-inner  p-1 justify-self-center rounded-3"
+                                                className="card-img m-3 aspect-square me-5 max-h-46 d-flex overflow-hidden border-2 shadow-blue-100 drop-shadow-xl shadow-inner  p-1 justify-self-center rounded-3"
                                                 src={`data:image/jpeg;base64,${lot?.image}`} alt=""></Image>
                                         </div>
                                         <div
-                                            className="d-flex mt-3 flex-column justify-content-start align-items-start">
-                                            <span>Зареєстровано: {lot.participants ?? 0}</span>
+                                            className="d-flex mt-3 text-muted text-lg flex-column justify-content-start align-items-start">
+                                            <span>Збираємо на: {lot.goal ?? 0}</span>
+                                            <span>Вже зареєстровано: {lot.participants ?? 0}</span>
                                             <span>Мінімальна ставка: {lot.minBet} грн.</span>
                                             <p>Опиc: {lot.description}</p>
                                             <div className="d-flex align-items-center">
@@ -118,12 +123,12 @@ export const LotList: React.FC<{ lots: any[],isMainPage:boolean, isWinnerPage:bo
                                         <div className="rounded-4 ms-auto bg-red-400"> 
                                         <Button onClick={() => navigate("/lot/" + lot.id)} variant="" className="text-light font-white">Переглянути</Button>
                                         </div>
-                                        <div className="rounded-4 me-auto bg-blue-400">
+                                        <div className="rounded-4 ms-2 me-auto bg-blue-400">
                                     {Lot.getState(lot) === LotState.Scheduled && !lot.isUserRegistered ? 
                                         
-                                        <Button variant="" className="text-light font-white" onClick={() => onLotRegisterClick(lot.id)}>Зареєструватися</Button>
+                                        <Button variant="" className="text-light rounded-4 font-white" onClick={() => onLotRegisterClick(lot.id)}>Зареєструватися</Button>
                                         : Lot.getState(lot) === LotState.Scheduled && lot.isUserRegistered ?
-                                            <Button disabled className="bg-dark">Ви вже зареєстровані ✔</Button> : null}
+                                            <Button disabled className="bg-dark rounded-4">Ви вже зареєстровані ✔</Button> : null}
                                     </div>
                                     </div>
                                 </ListGroup.Item>
@@ -134,5 +139,5 @@ export const LotList: React.FC<{ lots: any[],isMainPage:boolean, isWinnerPage:bo
                     )) : <h2>Аукціонів в цій категорії не знайдено</h2>}
                 </ListGroup>
             </div>
-        </>);
+        </div>);
 };

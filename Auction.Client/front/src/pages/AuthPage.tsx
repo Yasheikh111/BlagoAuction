@@ -32,8 +32,10 @@ const AuthPage: React.FC<AuthProps> = ({component: Component,setIsAuthenticated:
                     {Component == null ? (
                         <div className="d-flex justify-content-center container-fluid flex-column"><span
                             className="text-center justify-content-center mb-5 font-thin text-5xl text-dark">Авторизація</span>
-                            <Button className="p-2 align-self-center w-75 m-2" onClick={() => navigate("/signin")}>Вхід</Button>
-                            <Button className="p-2 align-self-center w-75 m-2" onClick={() => navigate("/signup")}>Реєстрація</Button>
+                            <Button className="p-2 align-self-center w-50 m-2" onClick={() => navigate("/signin")}>Вхід</Button>
+                            <Button className="p-2 align-self-center w-50 mb-0 m-2" onClick={() => navigate("/signup")}>Реєстрація</Button>
+                            <hr className="w-25 mb-1 align-self-center"></hr>
+                            <span onClick={() => navigate("/ticket/send/")} className="text-muted hover:scale-105 hover:cursor-pointer p-0 underline">Предаставник організації?</span>
                         </div>
                         ) : (
                             <>

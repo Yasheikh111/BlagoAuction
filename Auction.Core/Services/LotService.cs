@@ -3,6 +3,7 @@ using Ardalis.GuardClauses;
 using Auction.Core.Entities;
 using Auction.Core.Interfaces.Repositories;
 using Auction.Core.Interfaces.Services;
+using Auction.Infrastructure.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Auction.Core.Services;
@@ -14,8 +15,10 @@ public class LotService : ILotService
     private readonly IUserRepository _userRepository;
     private readonly ITimerService _timerService;
     private readonly ILotBetsRepository _lotBetsRepository;
+    
     private readonly BetHubService _betHubService;
     private readonly IUserOwnershipRepository _ownershipRepository;
+    private readonly IPaymentService<LiqPayResponseDto> _paymentService;
 
     public LotService(ILogger<LotService> logger,
         ILotRepository lotRepository,
@@ -23,8 +26,7 @@ public class LotService : ILotService
         ITimerService timerService,
         ILotBetsRepository lotBetsRepository,
         BetHubService betHubService,
-        IUserOwnershipRepository ownershipRepository)
-    {
+        IUserOwnershipRepository ownershipRepository, IPaymentService<LiqPayResponseDto> paymentService) {
         _logger = logger;
         _lotRepository = lotRepository;
         _userRepository = userRepository;
@@ -32,6 +34,7 @@ public class LotService : ILotService
         _lotBetsRepository = lotBetsRepository;
         _betHubService = betHubService;
         _ownershipRepository = ownershipRepository;
+        _paymentService = paymentService;
     }
 
     //maybe implement some kind of lock to resolve simultaneous bets situation.
@@ -42,13 +45,13 @@ public class LotService : ILotService
 
         var lot = await _lotRepository.GetWithDetails(bet.LotId);
         if (lot == null) throw new ArgumentException($"Lot with id:{bet.LotId} does not exist");
-        
-        
-        
+
+
+        user.Balance += lot.LatestUserBet(user)?.BetAmount ?? 0;
         _logger.LogInformation("Adding Bet...");
         lot.AddBet(user,bet);
         
-        user.Balance = user.Balance -= bet.BetAmount;
+        user.Balance -= bet.BetAmount;
 
         _lotRepository.Update(lot);
         _userRepository.Update(user);
@@ -86,6 +89,7 @@ public class LotService : ILotService
         lot.ReturnFundsForParticipants();
         _lotRepository.Update(lot);
         _logger.LogInformation("Done.");
+        _paymentService.SendToOrg(lot.LatestBet.BetAmount,lot.TargetCard);
 
         await _betHubService.SendLotEndNotification(lot);
     }

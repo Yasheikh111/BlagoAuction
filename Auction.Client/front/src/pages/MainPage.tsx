@@ -28,7 +28,7 @@ const MainPage: React.FC<any> = (props: {setUser: any}) => {
         }, []);
 
     return (
-        <div className="d-flex flex-column overflow-auto">
+        <div className="d-flex h-100 flex-column">
             <LotList isWinnerPage={false} isMainPage={true} lots={lots}></LotList>
         </div>
     );

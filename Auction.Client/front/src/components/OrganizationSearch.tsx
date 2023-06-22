@@ -1,6 +1,7 @@
 import React, {ReactEventHandler, SyntheticEvent, useState} from 'react';
-import { Form } from 'react-bootstrap';
+import {Form, ListGroupItem} from 'react-bootstrap';
 import LotService from "../services/LotService";
+import ListGroup from "react-bootstrap/ListGroup";
 
 const SearchComponent: React.FC<{ setSelectedOrganization:Function }> = (props: {setSelectedOrganization:Function}) => {
     const [searchText, setSearchText] = useState('');
@@ -25,27 +26,28 @@ const SearchComponent: React.FC<{ setSelectedOrganization:Function }> = (props: 
     };
 
     const handleSelect = (event : any) => {
-        console.log(event.target.value)
+        console.log(event.target.id)
         
-        props.setSelectedOrganization(Number(event.target.value));
+        props.setSelectedOrganization(Number(event.target.id));
         console.log("Selected.")
+        setOrgId(Number(event.target.id))
     };
 
     return (
-        <Form>
-            <Form.Label>Організація:</Form.Label>
+        <Form className="w-75 mx-auto">
+            <Form.Label>Вибір організації:</Form.Label>
             <Form.Control
                 type="text"
                 value={searchText}
                 onChange={handleSearch}
                 placeholder="Пошук"
             />
-            <select onChange={handleSelect} >
-                <option hidden={true}></option>
+            <ListGroup className="m-4 mb-5 w-50 mx-auto mb-2 mt-2" onChange={handleSelect} >
                 {searchResults.map( org =>
-                    <option key={org.id} value={org.id} >{org.name}</option>)
+                    <ListGroupItem className={orgId === org.Id ? "bg-slate-100" : ""} 
+                                   onClick={handleSelect} id={org.id} key={org.id} >{org.name}</ListGroupItem>)
                 }
-            </select>
+            </ListGroup>
         </Form>
     );
 };
