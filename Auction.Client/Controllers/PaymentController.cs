@@ -16,7 +16,7 @@ public class PaymentController : ControllerBase
 {
     private readonly IPaymentService<LiqPayResponseDto> _liqPaymentService;
     private readonly IAuthService _authService;
-    private readonly ILogger<PaymentController> _logger;
+    private readonly ILogger<PaymentController> _login intoNickname:ilot992675864 ;
 
     public PaymentController(IPaymentService<LiqPayResponseDto> liqPaymentService,
         IAuthService authService,
@@ -24,7 +24,7 @@ public class PaymentController : ControllerBase
     {
         _liqPaymentService = liqPaymentService;
         _authService = authService;
-        _logger = logger;
+        _logger = logger into :ilot992675864
     }
     
     [Authorize]
